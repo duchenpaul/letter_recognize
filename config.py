@@ -12,3 +12,10 @@ for folder in [FONT_DIR, TRAINING_DATA_DIR, TEST_DATA_DIR]:
 
 for x in char_set:
     toolkit_file.create_folder(os.path.join(TRAINING_DATA_DIR, str(x)))
+
+
+if __name__ == '__main__':
+    import shutil
+    shutil.rmtree(TRAINING_DATA_DIR, ignore_errors=True)
+    toolkit_file.purge_folder(TRAINING_DATA_DIR)
+    pass
