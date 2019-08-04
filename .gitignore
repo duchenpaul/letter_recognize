@@ -17,6 +17,7 @@
 **/*.log
 **/*.jpg
 **/*.ttf
+fonts/*
 
 
 *test*
