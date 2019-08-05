@@ -22,25 +22,26 @@ LR = 1e-3
 
 model_plan_list = [[32, 64], [8, 16], [16, 32], [64, 128], [32], [64], [128], ]
 
-convnet = input_data(shape=[None, IMG_SIZE, IMG_SIZE, 1], name='input')
 
+def create_model():
+    for nb_filter_list in model_plan_list:
+        tag = '[{}]'.format('-'.join([str(x) for x in nb_filter_list]))
+        MODELNAME = os.path.join(model_dir, 'letter_recognation-{}-{}.model'.format(LR, '{}_e{}'.format(tag, epoch)))
 
-for nb_filter_list in model_plan_list:
-    tag = '[{}]'.format('-'.join([str(x) for x in nb_filter_list]))
-    MODELNAME = os.path.join(model_dir, 'letter_recognation-{}-{}.model'.format(LR, '{}_e{}'.format(tag, epoch)))
+        convnet = input_data(shape=[None, IMG_SIZE, IMG_SIZE, 1], name='input')
+        for nb_filter in nb_filter_list:
+            convnet = conv_2d(convnet, nb_filter, 5, activation='relu')
+            convnet = max_pool_2d(convnet, 5)
 
-    for nb_filter in nb_filter_list:
-        convnet = conv_2d(convnet, nb_filter, 5, activation='relu')
-        convnet = max_pool_2d(convnet, 5)
+        convnet = fully_connected(convnet, 1024, activation='relu')
+        convnet = dropout(convnet, 0.8)
 
-    convnet = fully_connected(convnet, 1024, activation='relu')
-    convnet = dropout(convnet, 0.8)
+        convnet = fully_connected(convnet, len(config.char_set), activation='softmax')
+        convnet = regression(convnet, optimizer='adam', learning_rate=LR,
+                             loss='categorical_crossentropy', name='targets')
 
-    convnet = fully_connected(convnet, len(config.char_set), activation='softmax')
-    convnet = regression(convnet, optimizer='adam', learning_rate=LR,
-                         loss='categorical_crossentropy', name='targets')
-
-    model = tflearn.DNN(convnet, tensorboard_dir='log')
+        model = tflearn.DNN(convnet, tensorboard_dir='log')
+        return MODELNAME, model
 
 
 def train_model():
@@ -58,6 +59,7 @@ def train_model():
     test_y = [i[1] for i in test]
 
     print("TRAIN")
+    MODELNAME, model = create_model()
     model.fit({'input': X}, {'targets': Y}, n_epoch=epoch, validation_set=({'input': test_x}, {'targets': test_y}),
               snapshot_step=500, show_metric=True, run_id=MODELNAME)
     model.save(MODELNAME)
@@ -65,6 +67,7 @@ def train_model():
 
 def test_model():
     print('Test model')
+    MODELNAME, model = create_model()
     if os.path.exists(os.path.join(config.model_dir, '{}.meta'.format(MODELNAME))):
         model.load(MODELNAME)
         print('Model loaded!')
@@ -88,7 +91,7 @@ def test_model():
         y = fig.add_subplot(3, 4, num + 1)
         orig = img_data
         data = img_data.reshape(IMG_SIZE, IMG_SIZE, 1)
-        #model_out = model.predict([data])[0]
+        MODELNAME, model = create_model()
         model_out = model.predict([data])[0]
 
         print(np.argmax(model_out))
