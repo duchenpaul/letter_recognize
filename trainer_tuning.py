@@ -22,12 +22,13 @@ epoch = 15
 # Learning rate
 LR = 1e-3
 
-model_plan_list = [[32, 64], [32, 64, 32], [32, 64, 16]]
+model_plan_list = [[32, 64, 1e-0], [32, 64, 1e-4], [32, 64, 1e-3], [32, 64, 1e-2], [32, 64, 1e-1]]
     
 
 
 def create_model(nb_filter_list):
     tag = '[{}]'.format('-'.join([str(x) for x in nb_filter_list]))
+    LR = nb_filter_list.pop[2]
     MODELNAME = os.path.join(model_dir, 'letter_recognation-{}-{}.model'.format(LR, '{}_e{}'.format(tag, epoch)))
 
     convnet = input_data(shape=[None, IMG_SIZE, IMG_SIZE, 1], name='input')
