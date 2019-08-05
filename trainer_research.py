@@ -27,7 +27,7 @@ convnet = input_data(shape=[None, IMG_SIZE, IMG_SIZE, 1], name='input')
 
 for nb_filter_list in model_plan_list:
     # nb_filter_list = [32, 64, 128, 64, 32]
-    tag = '[{}]'.format('-'.join(nb_filter_list))
+    tag = '[{}]'.format('-'.join([str(x) for x in nb_filter_list]))
     MODELNAME = os.path.join(model_dir, 'letter_recognation-{}-{}.model'.format(LR, '{}_e{}'.format(tag, epoch)))
 
     for nb_filter in nb_filter_list:
