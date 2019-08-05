@@ -18,8 +18,9 @@ epoch = 15
 
 # Learning rate
 LR = 1e-3
+tag = '[32-64-128-64-32]'
 
-MODELNAME = 'letter_recognation-{}-{}.model'.format(LR, 'test_e{}'.format(epoch))
+MODELNAME = 'letter_recognation-{}-{}.model'.format(LR, '{}_e{}'.format(tag, epoch))
 
 
 convnet = input_data(shape=[None, IMG_SIZE, IMG_SIZE, 1], name='input')
