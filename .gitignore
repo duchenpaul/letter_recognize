@@ -21,7 +21,7 @@
 **/*.npy
 fonts/*
 models/*
-
+log/*
 
 *test*
 config.ini
