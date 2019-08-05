@@ -6,6 +6,8 @@ from tflearn.layers.conv import conv_2d, max_pool_2d
 from tflearn.layers.core import input_data, dropout, fully_connected
 from tflearn.layers.estimator import regression
 
+import tensorflow as tf
+
 import train_prep
 
 import config
@@ -64,6 +66,7 @@ def train_model():
         model.fit({'input': X}, {'targets': Y}, n_epoch=epoch, validation_set=({'input': test_x}, {'targets': test_y}),
                   snapshot_step=500, show_metric=True, run_id=MODELNAME)
         model.save(MODELNAME)
+        tf.reset_default_graph()
 
 
 if __name__ == '__main__':
