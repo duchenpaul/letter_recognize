@@ -26,7 +26,6 @@ convnet = input_data(shape=[None, IMG_SIZE, IMG_SIZE, 1], name='input')
 
 
 for nb_filter_list in model_plan_list:
-    # nb_filter_list = [32, 64, 128, 64, 32]
     tag = '[{}]'.format('-'.join([str(x) for x in nb_filter_list]))
     MODELNAME = os.path.join(model_dir, 'letter_recognation-{}-{}.model'.format(LR, '{}_e{}'.format(tag, epoch)))
 
@@ -34,16 +33,14 @@ for nb_filter_list in model_plan_list:
         convnet = conv_2d(convnet, nb_filter, 5, activation='relu')
         convnet = max_pool_2d(convnet, 5)
 
+    convnet = fully_connected(convnet, 1024, activation='relu')
+    convnet = dropout(convnet, 0.8)
 
+    convnet = fully_connected(convnet, len(config.char_set), activation='softmax')
+    convnet = regression(convnet, optimizer='adam', learning_rate=LR,
+                         loss='categorical_crossentropy', name='targets')
 
-convnet = fully_connected(convnet, 1024, activation='relu')
-convnet = dropout(convnet, 0.8)
-
-convnet = fully_connected(convnet, len(config.char_set), activation='softmax')
-convnet = regression(convnet, optimizer='adam', learning_rate=LR,
-                     loss='categorical_crossentropy', name='targets')
-
-model = tflearn.DNN(convnet, tensorboard_dir='log')
+    model = tflearn.DNN(convnet, tensorboard_dir='log')
 
 
 def train_model():
