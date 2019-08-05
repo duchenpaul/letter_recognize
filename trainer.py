@@ -21,7 +21,7 @@ epoch = 15
 LR = 1e-3
 tag = '[32-64-128-64-32]'
 
-MODELNAME = os.path.join('model_dir', 'letter_recognation-{}-{}.model'.format(LR, '{}_e{}'.format(tag, epoch)))
+MODELNAME = os.path.join(model_dir, 'letter_recognation-{}-{}.model'.format(LR, '{}_e{}'.format(tag, epoch)))
 
 
 convnet = input_data(shape=[None, IMG_SIZE, IMG_SIZE, 1], name='input')
@@ -73,7 +73,7 @@ def train_model():
 
 def test_model():
     print('Test model')
-    if os.path.exists('{}.meta'.format(MODELNAME)):
+    if os.path.exists(os.path.join(config.model_dir, '{}.meta'.format(MODELNAME))):
         model.load(MODELNAME)
         print('Model loaded!')
 
