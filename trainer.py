@@ -13,6 +13,7 @@ import config
 tflearn.init_graph(gpu_memory_fraction=0.5)
 
 IMG_SIZE = config.IMG_SIZE
+model_dir = config.MODEL_DIR
 
 epoch = 15
 
@@ -20,7 +21,7 @@ epoch = 15
 LR = 1e-3
 tag = '[32-64-128-64-32]'
 
-MODELNAME = 'letter_recognation-{}-{}.model'.format(LR, '{}_e{}'.format(tag, epoch))
+MODELNAME = os.path.join('model_dir', 'letter_recognation-{}-{}.model'.format(LR, '{}_e{}'.format(tag, epoch)))
 
 
 convnet = input_data(shape=[None, IMG_SIZE, IMG_SIZE, 1], name='input')
