@@ -22,20 +22,22 @@ epoch = 150
 # Learning rate
 LR = 1e-3
 
-model_plan_list = [[32, 64, 1e-3], [32, 64, 1e-3/2], [32, 64, 32, 1e-3], [32, 64, 16, 1e-3], [16, 32, 16, 1e-3], [16, 64, 16, 1e-3]]
+model_plan_list = [[32, 64, 1e-3/2, True], [32, 64, 1e-3/2, False]]
     
 
 
 def create_model(nb_filter_list):
     tag = '[{}]'.format('-'.join([str(x) for x in nb_filter_list]))
-    LR = nb_filter_list.pop(2)
+    DROPOUT_FLG = nb_filter_list.pop(-1)
+    LR = nb_filter_list.pop(-1)
     MODELNAME = os.path.join(model_dir, 'letter_recognation-{}-{}.model'.format(LR, '{}_e{}'.format(tag, epoch)))
 
     convnet = input_data(shape=[None, IMG_SIZE, IMG_SIZE, 1], name='input')
     for nb_filter in nb_filter_list:
         convnet = conv_2d(convnet, nb_filter, 5, activation='relu')
         convnet = max_pool_2d(convnet, 5)
-        convnet = dropout(convnet, 0.8)
+        if DROPOUT_FLG:
+            convnet = dropout(convnet, 0.8)
 
     convnet = fully_connected(convnet, 1024, activation='relu')
     convnet = dropout(convnet, 0.8)
