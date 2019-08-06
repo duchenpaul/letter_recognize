@@ -35,6 +35,7 @@ def create_model(nb_filter_list):
     for nb_filter in nb_filter_list:
         convnet = conv_2d(convnet, nb_filter, 5, activation='relu')
         convnet = max_pool_2d(convnet, 5)
+        convnet = dropout(convnet, 0.8)
 
     convnet = fully_connected(convnet, 1024, activation='relu')
     convnet = dropout(convnet, 0.8)
