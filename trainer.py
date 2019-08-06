@@ -15,11 +15,11 @@ tflearn.init_graph(gpu_memory_fraction=0.5)
 IMG_SIZE = config.IMG_SIZE
 model_dir = config.MODEL_DIR
 
-epoch = 15
+epoch = 150
 
 # Learning rate
-LR = 1e-3
-tag = '[32-64-128-64-32]'
+LR = 1e-3/2
+tag = '[32-64]'
 
 MODELNAME = os.path.join(model_dir, 'letter_recognation-{}-{}.model'.format(LR, '{}_e{}'.format(tag, epoch)))
 
@@ -30,15 +30,6 @@ convnet = conv_2d(convnet, 32, 5, activation='relu')
 convnet = max_pool_2d(convnet, 5)
 
 convnet = conv_2d(convnet, 64, 5, activation='relu')
-convnet = max_pool_2d(convnet, 5)
-
-convnet = conv_2d(convnet, 128, 5, activation='relu')
-convnet = max_pool_2d(convnet, 5)
-
-convnet = conv_2d(convnet, 64, 5, activation='relu')
-convnet = max_pool_2d(convnet, 5)
-
-convnet = conv_2d(convnet, 32, 5, activation='relu')
 convnet = max_pool_2d(convnet, 5)
 
 convnet = fully_connected(convnet, 1024, activation='relu')
