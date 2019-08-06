@@ -7,8 +7,8 @@ TEST_DATA_DIR = 'test_data'
 
 MODEL_DIR = 'models'
 
-char_set = list(range(ord('0'), ord('9') + 1)) + list(range(ord('A'),
-                                                            ord('Z') + 1)) + list(range(ord('a'), ord('z') + 1))
+# char_set = list(range(ord('0'), ord('9') + 1)) + list(range(ord('A'), ord('Z') + 1)) + list(range(ord('a'), ord('z') + 1))
+char_set = list(range(ord('0'), ord('9') + 1))
 
 for folder in [FONT_DIR, TRAINING_DATA_DIR, TEST_DATA_DIR, MODEL_DIR]:
     toolkit_file.create_folder(folder)
