@@ -1,9 +1,9 @@
-import toolkit_file
+import shutil
 import config
 
 def purge_models():
-    toolkit_file.purge_folder(config.TRAINING_DATA_DIR)
-    toolkit_file.purge_folder(config.MODEL_DIR)
+    for folder in [config.TRAINING_DATA_DIR, config.MODEL_DIR]:
+        shutil.rmtree(folder, ignore_errors=True)
 
 if __name__ == '__main__':
     pass
