@@ -6,6 +6,7 @@ from tflearn.layers.conv import conv_2d, max_pool_2d
 from tflearn.layers.core import input_data, dropout, fully_connected
 from tflearn.layers.estimator import regression
 
+import purge_models
 import train_prep
 
 import config
@@ -18,10 +19,10 @@ model_dir = config.MODEL_DIR
 epoch = 15
 
 # Learning rate
-LR = 1e-3/2
+LR = 1e-3
 tag = '[32-64]'
 
-MODELNAME = os.path.join(model_dir, 'letter_recognation-{}-{}.model'.format(LR, '{}_e{}'.format(tag, epoch)))
+MODELNAME = os.path.join('letter_recognation-{}-{}.model'.format(LR, '{}_e{}'.format(tag, epoch)))
 
 
 convnet = input_data(shape=[None, IMG_SIZE, IMG_SIZE, 1], name='input')
@@ -31,6 +32,8 @@ convnet = max_pool_2d(convnet, 5)
 
 convnet = conv_2d(convnet, 64, 5, activation='relu')
 convnet = max_pool_2d(convnet, 5)
+
+
 
 convnet = fully_connected(convnet, 1024, activation='relu')
 convnet = dropout(convnet, 0.8)
@@ -43,6 +46,7 @@ model = tflearn.DNN(convnet, tensorboard_dir='log')
 
 
 def train_model():
+    purge_models.purge_models()
     train_data = np.load('train_data.npy', allow_pickle=True)
     # train_data = train_prep.create_training_data()
     # train = train_data[:-5]
@@ -64,7 +68,7 @@ def train_model():
 
 def test_model():
     print('Test model')
-    if os.path.exists(os.path.join(config.model_dir, '{}.meta'.format(MODELNAME))):
+    if os.path.exists(os.path.join(model_dir, '{}.meta'.format(MODELNAME))):
         model.load(MODELNAME)
         print('Model loaded!')
 
@@ -102,5 +106,5 @@ def test_model():
 
 
 if __name__ == '__main__':
-    train_model()
-    # test_model()
+    # train_model()
+    test_model()

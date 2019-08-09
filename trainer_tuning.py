@@ -8,6 +8,7 @@ from tflearn.layers.estimator import regression
 
 import tensorflow as tf
 
+import purge_models
 import train_prep
 
 import config
@@ -51,6 +52,7 @@ def create_model(nb_filter_list):
 
 
 def train_model():
+    purge_models.purge_models()
     train_data = np.load('train_data.npy', allow_pickle=True)
     # train_data = train_prep.create_training_data()
     # train = train_data[:-5]
