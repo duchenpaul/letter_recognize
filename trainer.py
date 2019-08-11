@@ -11,12 +11,14 @@ import train_prep
 
 import config
 
+import color_card
+
 tflearn.init_graph(gpu_memory_fraction=0.5)
 
 IMG_SIZE = config.IMG_SIZE
 model_dir = config.MODEL_DIR
 
-epoch = 15
+epoch = 150
 
 # Learning rate
 LR = 1e-3/2
@@ -97,9 +99,11 @@ def test_model():
         # print(config.char_set[int(np.argmax(model_out))])
         ans = chr(config.char_set[int(np.argmax(model_out))])
         notSureFlag = '?' if model_out[np.argmax(model_out)] < 0.5 else ''
-        print('Answer: {}  Confidence: {}\n'.format(ans, model_out[np.argmax(model_out)]))
+        confidence = model_out[np.argmax(model_out)]
+        print('Answer: {}  Confidence: {}\n'.format(ans, confidence))
         y.imshow(orig, cmap='gray')
-        plt.title(ans + notSureFlag)
+        color = color_card.color_card(confidence*100)
+        plt.title(ans + notSureFlag,color=color)
         y.axes.get_xaxis().set_visible(False)
         y.axes.get_yaxis().set_visible(False)
     plt.show()
