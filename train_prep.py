@@ -67,4 +67,6 @@ def process_test_data():
 
 
 if __name__ == '__main__':
+    import purge_models
+    purge_models.purge_models()
     training_data = create_training_data()
