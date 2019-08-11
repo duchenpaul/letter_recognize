@@ -36,7 +36,7 @@ def create_model(nb_filter_list):
     tag = '[{}]'.format('-'.join([str(x) for x in nb_filter_list]))
     DROPOUT_FLG = nb_filter_list.pop(-1)
     LR = nb_filter_list.pop(-1)
-    MODELNAME = os.path.join(model_dir, 'letter_recognation-{}-{}.model'.format(LR, '{}_e{}'.format(tag, epoch)))
+    MODELNAME = 'letter_recognation-{}-{}.model'.format(LR, '{}_e{}'.format(tag, epoch))
 
     convnet = input_data(shape=[None, IMG_SIZE, IMG_SIZE, 1], name='input')
     for nb_filter in nb_filter_list:
