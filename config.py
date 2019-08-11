@@ -18,7 +18,7 @@ for x in char_set:
     toolkit_file.create_folder(os.path.join(TRAINING_DATA_DIR, str(x)))
 
 
-IMG_SIZE = 28
+IMG_SIZE = 35
 
 
 if __name__ == '__main__':

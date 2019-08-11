@@ -23,7 +23,7 @@ def generate_image(font_file, char):
     '''
     W, H = 50, 50
     size = (W, H)
-    font_size = 30
+    font_size = 35
 
     image = Image.new('1', size)
     font = ImageFont.truetype(font_file, font_size)
