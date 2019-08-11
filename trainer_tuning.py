@@ -18,12 +18,18 @@ tflearn.init_graph(gpu_memory_fraction=0.5)
 IMG_SIZE = config.IMG_SIZE
 model_dir = config.MODEL_DIR
 
-epoch = 30
+epoch = 150
 
 # Learning rate
 LR = 1e-3
 
-model_plan_list = [[32, 64, 1e-3/2, True], [32, 64, 1e-3/2, False]]
+model_plan_list = [
+    [32, 64, 1e-3/2, True], 
+    [32, 64, 1e-3/2, False], 
+    [32, 64, 128, 1e-3/2, False], 
+    [32, 64, 32, 1e-3/2, False], 
+    [32, 64, 128, 64, 32, 1e-3/2, False], 
+]
 
 
 def create_model(nb_filter_list):
