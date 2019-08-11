@@ -23,7 +23,6 @@ LR = 1e-3/2
 tag = '[32-64]'
 
 MODELNAME = os.path.join('letter_recognation-{}-{}.model'.format(LR, '{}_e{}'.format(tag, epoch)))
-MODELNAME = 'letter_recognation-0.0005-[32-64-0.0005-True]_e25.model'
 MODELNAME_FILES = os.path.join(model_dir, MODELNAME)
 
 
