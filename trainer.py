@@ -91,11 +91,14 @@ def test_model():
         #model_out = model.predict([data])[0]
         model_out = model.predict([data])[0]
 
-        print(np.argmax(model_out))
+        # print(model_out)
         str_label = str(np.argmax(model_out))
-        print('Confidence: {}\n'.format(model_out[np.argmax(model_out)]))
+        # print(str_label)
+        # print(config.char_set[int(np.argmax(model_out))])
+        ans = chr(config.char_set[int(np.argmax(model_out))])
+        print('Answer: {}  Confidence: {}\n'.format(ans, model_out[np.argmax(model_out)]))
         y.imshow(orig, cmap='gray')
-        plt.title(str_label)
+        plt.title(ans)
         y.axes.get_xaxis().set_visible(False)
         y.axes.get_yaxis().set_visible(False)
     plt.show()
