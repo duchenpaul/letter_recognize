@@ -21,4 +21,4 @@ def purge_models():
 
 
 if __name__ == '__main__':
-    pass
+    purge_models()
