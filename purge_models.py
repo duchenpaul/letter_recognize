@@ -16,7 +16,7 @@ def purge_folders(folder):
 
 
 def purge_models():
-    for folder in [config.TRAINING_DATA_DIR, config.MODEL_DIR, 'log']:
+    for folder in [config.MODEL_DIR, config.MODEL_LOG]:
         purge_folders(folder)
 
 
