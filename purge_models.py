@@ -17,6 +17,7 @@ def purge_folders(folder):
 
 def purge_models():
     for folder in [config.MODEL_DIR, config.MODEL_LOG]:
+        print('Purge folder ' + folder)
         purge_folders(folder)
 
 
