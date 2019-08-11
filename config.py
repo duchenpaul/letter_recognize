@@ -6,6 +6,7 @@ TRAINING_DATA_DIR = 'training_data'
 TEST_DATA_DIR = 'test_data'
 
 MODEL_DIR = 'models'
+MODEL_LOG = 'log'
 
 # char_set = list(range(ord('0'), ord('9') + 1)) + list(range(ord('A'), ord('Z') + 1)) + list(range(ord('a'), ord('z') + 1))
 char_set = list(range(ord('0'), ord('9') + 1))

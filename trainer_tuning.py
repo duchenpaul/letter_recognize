@@ -46,7 +46,7 @@ def create_model(nb_filter_list):
     convnet = regression(convnet, optimizer='adam', learning_rate=LR,
                          loss='categorical_crossentropy', name='targets')
 
-    model = tflearn.DNN(convnet, tensorboard_dir='log')
+    model = tflearn.DNN(convnet, tensorboard_dir=config.MODEL_LOG)
     return MODELNAME, model
 
 
