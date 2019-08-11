@@ -44,7 +44,7 @@ convnet = fully_connected(convnet, len(config.char_set), activation='softmax')
 convnet = regression(convnet, optimizer='adam', learning_rate=LR,
                      loss='categorical_crossentropy', name='targets')
 
-model = tflearn.DNN(convnet, tensorboard_dir=config.MODEL_LOG)
+model = tflearn.DNN(convnet, tensorboard_dir=config.MODEL_LOG, tensorboard_verbose=3)
 
 
 def train_model():
