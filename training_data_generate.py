@@ -10,7 +10,10 @@ from PIL import ImageDraw
 from PIL import ImageFont
 from PIL import ImageOps
 
+
 import toolkit_file
+
+import purge_models
 
 font_dir = config.FONT_DIR
 char_set = config.char_set
@@ -48,7 +51,7 @@ def batch_generate(font_file):
     basename = toolkit_file.get_basename(font_file)
     for order in char_set:
         generate_image(font_file, chr(order)).save(os.path.join(
-            training_data_dir, str(order), '{}.jpg'.format(basename)))
+            training_data_dir, str(order), '{}_{}.jpg'.format(basename, order)))
 
 
 if __name__ == '__main__':
@@ -57,6 +60,8 @@ if __name__ == '__main__':
     Fixedsys500c
     Helvetica
     '''
+    purge_models.purge_folders(training_data_dir)
+    config.init_folder()
     font_list = toolkit_file.get_file_list(font_dir)
     for fontName in font_list:
         font = '{}'.format(fontName)
