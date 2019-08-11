@@ -16,21 +16,22 @@ tflearn.init_graph(gpu_memory_fraction=0.5)
 IMG_SIZE = config.IMG_SIZE
 model_dir = config.MODEL_DIR
 
-epoch = 15
+epoch = 5
 
 # Learning rate
 LR = 1e-3
 tag = '[32-64]'
 
 MODELNAME = os.path.join('letter_recognation-{}-{}.model'.format(LR, '{}_e{}'.format(tag, epoch)))
+MODELNAME_FILES = os.path.join(model_dir, MODELNAME)
 
 
 convnet = input_data(shape=[None, IMG_SIZE, IMG_SIZE, 1], name='input')
 
-convnet = conv_2d(convnet, 32, 5, activation='relu')
+convnet = conv_2d(convnet, 20, 5, activation='relu')
 convnet = max_pool_2d(convnet, 5)
 
-convnet = conv_2d(convnet, 64, 5, activation='relu')
+convnet = conv_2d(convnet, 30, 5, activation='relu')
 convnet = max_pool_2d(convnet, 5)
 
 
@@ -63,13 +64,13 @@ def train_model():
     print("TRAIN")
     model.fit({'input': X}, {'targets': Y}, n_epoch=epoch, validation_set=({'input': test_x}, {'targets': test_y}),
               snapshot_step=500, show_metric=True, run_id=MODELNAME)
-    model.save(MODELNAME)
+    model.save(MODELNAME_FILES)
 
 
 def test_model():
     print('Test model')
     if os.path.exists(os.path.join(model_dir, '{}.meta'.format(MODELNAME))):
-        model.load(MODELNAME)
+        model.load(MODELNAME_FILES)
         print('Model loaded!')
 
     import matplotlib.pyplot as plt
@@ -82,9 +83,6 @@ def test_model():
     fig = plt.figure()
 
     for num, data in enumerate(test_data[:12]):
-        # cat: [1,0]
-        # dog: [0,1]
-
         img_num = data[1]
         img_data = data[0]
 
@@ -97,6 +95,7 @@ def test_model():
         print(np.argmax(model_out))
         str_label = str(np.argmax(model_out))
         print('Confidence: {}'.format(model_out[np.argmax(model_out)]))
+        print('\n')
 
         y.imshow(orig, cmap='gray')
         plt.title(str_label)
@@ -106,5 +105,5 @@ def test_model():
 
 
 if __name__ == '__main__':
-    # train_model()
+    train_model()
     test_model()

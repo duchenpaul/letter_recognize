@@ -24,7 +24,6 @@ epoch = 30
 LR = 1e-3
 
 model_plan_list = [[32, 64, 1e-3/2, True], [32, 64, 1e-3/2, False]]
-    
 
 
 def create_model(nb_filter_list):
@@ -71,7 +70,8 @@ def train_model():
         MODELNAME, model = create_model(nb_filter_list)
         model.fit({'input': X}, {'targets': Y}, n_epoch=epoch, validation_set=({'input': test_x}, {'targets': test_y}),
                   snapshot_step=500, show_metric=True, run_id=MODELNAME)
-        model.save(MODELNAME)
+        MODELNAME_FILES = model_dir + MODELNAME
+        model.save(MODELNAME_FILES)
         tf.reset_default_graph()
 
 
