@@ -22,30 +22,38 @@ def number2list(number):
     return listofzeros
 
 
+def data_process(data_path, label):
+    '''data_path: dir where image locates
+       label: for training data label should be the list like cat, dog: [0, 1]
+    '''
+    training_data = []
+    for img in os.listdir(data_path):  # iterate over each image per dogs and cats
+        try:
+            img_array = cv2.imread(os.path.join(
+                data_path, img), cv2.IMREAD_GRAYSCALE)  # convert to array
+
+            new_array = cv2.resize(img_array, (IMG_SIZE, IMG_SIZE))
+            ret,new_array=cv2.threshold(new_array,100,255,cv2.THRESH_BINARY)
+            training_data.append([new_array/255, label])
+            # plt.imshow(new_array, cmap='gray')
+            # plt.show()
+        except Exception as e:
+            print('Error Reading: ' + os.path.join(data_path, img))
+            os.remove(os.path.join(data_path, img))
+            pass
+    #     break
+    # break
+    return training_data
+
+
 def create_training_data():
     training_data = []
     for idx, category in enumerate(CATEGORIES):  # do dogs and cats
         # create path to dogs and cats
         path = os.path.join(TRAINDIR, str(category))
         label = number2list(idx)
-        for img in os.listdir(path):  # iterate over each image per dogs and cats
-            try:
-                img_array = cv2.imread(os.path.join(
-                    path, img), cv2.IMREAD_GRAYSCALE)  # convert to array
-
-                new_array = cv2.resize(img_array, (IMG_SIZE, IMG_SIZE))
-                ret,new_array=cv2.threshold(new_array,100,255,cv2.THRESH_BINARY)
-                training_data.append([new_array/255, label])
-                # plt.imshow(new_array, cmap='gray')
-                # plt.show()
-            except Exception as e:
-                print('Error Reading: ' + os.path.join(path, img))
-                os.remove(os.path.join(path, img))
-                pass
-        #     break
-        # break
+        training_data += data_process(path, label)
     random.shuffle(training_data)
-    # print(training_data)
     np.save('train_data.npy', training_data)
     return training_data
 
@@ -53,24 +61,8 @@ def create_training_data():
 def process_test_data():
     test_data = []
     path = TESTDIR  # create path to dogs and cats
-    for img in os.listdir(path):  # iterate over each image per dogs and cats
-        try:
-            print(os.path.join(path, img))
-            img_array = cv2.imread(os.path.join(
-                path, img), cv2.IMREAD_GRAYSCALE)  # convert to array
-            # plt.imshow(img_array, cmap='gray')  # graph it
-            # plt.show()  # display!
 
-            new_array = cv2.resize(img_array, (IMG_SIZE, IMG_SIZE))
-            # plt.imshow(new_array, cmap='gray')
-            # plt.show()
-            test_data.append([new_array, img.split('.')[0]])
-        except Exception as e:
-            print('Error Reading: ' + os.path.join(path, img))
-            print(e)
-            # os.remove(os.path.join(path, img))
-            pass
-        # break
+    test_data = data_process(path, 'test')
     return test_data
 
 
