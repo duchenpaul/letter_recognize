@@ -96,14 +96,15 @@ def test_model():
         # print(str_label)
         # print(config.char_set[int(np.argmax(model_out))])
         ans = chr(config.char_set[int(np.argmax(model_out))])
+        notSureFlag = '?' if model_out[np.argmax(model_out)] < 0.5 else ''
         print('Answer: {}  Confidence: {}\n'.format(ans, model_out[np.argmax(model_out)]))
         y.imshow(orig, cmap='gray')
-        plt.title(ans)
+        plt.title(ans + notSureFlag)
         y.axes.get_xaxis().set_visible(False)
         y.axes.get_yaxis().set_visible(False)
     plt.show()
 
 
 if __name__ == '__main__':
-    train_model()
+    # train_model()
     test_model()
