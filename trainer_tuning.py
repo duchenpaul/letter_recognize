@@ -21,14 +21,13 @@ model_dir = config.MODEL_DIR
 epoch = 25
 
 # Learning rate
-LR = 1e-3
+LR = 1e-3/2
 
 model_plan_list = [
-    [32, 64, 1e-3/2, True], 
-    [32, 64, 1e-3/2, False], 
-    [32, 64, 128, 1e-3/2, False], 
-    [32, 64, 32, 1e-3/2, False], 
-    [32, 64, 128, 64, 32, 1e-3/2, False], 
+    [32, 64, LR, False], 
+    [32, 64, 128, LR, False], 
+    [32, 64, 32, LR, False], 
+    [32, 64, 128, 64, 32, LR, False], 
 ]
 
 
