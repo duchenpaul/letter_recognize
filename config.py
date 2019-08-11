@@ -11,15 +11,18 @@ MODEL_LOG = 'log'
 char_set = list(range(ord('0'), ord('9') + 1)) + list(range(ord('A'), ord('Z') + 1)) + list(range(ord('a'), ord('z') + 1))
 # char_set = list(range(ord('0'), ord('9') + 1))
 
-for folder in [FONT_DIR, TRAINING_DATA_DIR, TEST_DATA_DIR, MODEL_DIR]:
-    toolkit_file.create_folder(folder)
-
-for x in char_set:
-    toolkit_file.create_folder(os.path.join(TRAINING_DATA_DIR, str(x)))
-
-
 IMG_SIZE = 35
 
+
+def init_folder():
+    for folder in [FONT_DIR, TRAINING_DATA_DIR, TEST_DATA_DIR, MODEL_DIR]:
+        toolkit_file.create_folder(folder)
+
+    for x in char_set:
+        toolkit_file.create_folder(os.path.join(TRAINING_DATA_DIR, str(x)))
+
+
+init_folder()
 
 if __name__ == '__main__':
     # import shutil
