@@ -22,27 +22,42 @@ def number2list(number):
     return listofzeros
 
 
+def trim(img):
+    from PIL import ImageChops, Image
+
+    '''Trim whitespace of the image'''
+    img = Image.fromarray(img) 
+    bg = Image.new(img.mode, img.size, img.getpixel((0, 0)))
+    diff = ImageChops.difference(img, bg)
+    diff = ImageChops.add(diff, diff, 2.0, -100)
+    bbox = diff.getbbox()
+    if bbox:
+        img = img.crop(bbox)
+        return np.asarray(img)
+
+
 def data_process(data_path, label):
     '''data_path: dir where image locates
        label: for training data label should be the list like cat, dog: [0, 1]
     '''
     training_data = []
     for img in os.listdir(data_path):  # iterate over each image per dogs and cats
+        print(img)
         try:
             img_array = cv2.imread(os.path.join(
                 data_path, img), cv2.IMREAD_GRAYSCALE)  # convert to array
-
+            img_array = trim(img_array)
             new_array = cv2.resize(img_array, (IMG_SIZE, IMG_SIZE))
-            ret,new_array=cv2.threshold(new_array,100,255,cv2.THRESH_BINARY)
-            training_data.append([new_array/255, label])
+            ret, new_array = cv2.threshold(
+                new_array, 100, 255, cv2.THRESH_BINARY)
+            training_data.append([new_array / 255, label])
             # plt.imshow(new_array, cmap='gray')
             # plt.show()
         except Exception as e:
             print('Error Reading: ' + os.path.join(data_path, img))
             os.remove(os.path.join(data_path, img))
-            pass
-    #     break
-    # break
+            raise
+        # break
     return training_data
 
 
@@ -53,6 +68,7 @@ def create_training_data():
         path = os.path.join(TRAINDIR, str(category))
         label = number2list(idx)
         training_data += data_process(path, label)
+        print(len(training_data))
     random.shuffle(training_data)
     np.save('train_data.npy', training_data)
     return training_data
