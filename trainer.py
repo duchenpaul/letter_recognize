@@ -73,6 +73,10 @@ def test_model():
     if os.path.exists(os.path.join(model_dir, '{}.meta'.format(MODELNAME))):
         model.load(MODELNAME_FILES)
         print('Model loaded!')
+    else:
+        err_msg = 'Model {} not found'.format(os.path.join(model_dir, '{}.meta'.format(MODELNAME)))
+        raise Exception(err_msg)
+
 
     import matplotlib.pyplot as plt
 
