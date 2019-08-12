@@ -26,12 +26,12 @@ LR = 1e-3/2
 model_plan_list = [
     [32, 64, LR, True], 
     [32, 64, LR, False], 
-    [32/2, 64/2, LR, True], 
-    [32/2, 64/2, LR, False], 
-    [32*2, 64*2, LR, True], 
-    [32*2, 64*2, LR, False], 
-    [32/2, 64*2, LR, True], 
-    [32/2, 64*2, LR, False], 
+    [int(32/2), int(64/2), LR, True], 
+    [int(32/2), int(64/2), LR, False], 
+    [int(32*2), int(64*2), LR, True], 
+    [int(32*2), int(64*2), LR, False], 
+    [int(32/2), int(64*2), LR, True], 
+    [int(32/2), int(64*2), LR, False], 
 ]
 
 
