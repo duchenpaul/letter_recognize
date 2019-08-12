@@ -15,7 +15,7 @@ IMG_SIZE = 35
 
 
 def init_folder():
-    for folder in [FONT_DIR, TRAINING_DATA_DIR, TEST_DATA_DIR, MODEL_DIR]:
+    for folder in [FONT_DIR, TRAINING_DATA_DIR, TEST_DATA_DIR, MODEL_DIR, MODEL_LOG]:
         toolkit_file.create_folder(folder)
 
     for x in char_set:
