@@ -106,6 +106,7 @@ def test_model():
         # print(config.char_set[int(np.argmax(model_out))])
         ans = chr(config.char_set[int(np.argmax(model_out))])
         notSureFlag = '?' if model_out[np.argmax(model_out)] < 0.5 else ''
+        notSureFlag = '!' if model_out[np.argmax(model_out)] == 1 else ''
         confidence = model_out[np.argmax(model_out)]
         print('Answer: {}  Confidence: {}\n'.format(ans, confidence))
         y.imshow(orig, cmap='gray')
