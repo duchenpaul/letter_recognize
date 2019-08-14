@@ -31,9 +31,10 @@ tag = '[{}]'.format('-'.join([str(x) for x in layer_list]))
 MODELNAME = os.path.join('letter_recognation-{}-{}.model'.format(LR, '{}_e{}'.format(tag, epoch)))
 MODELNAME_FILE = os.path.join(model_dir, MODELNAME)
 
-logdir = "logs/"
-file_writer = tf.summary.create_file_writer(logdir + "/metrics")
-file_writer.set_as_default()
+logdir = "log"
+sess = tf.compat.v1.Session()
+file_writer = tf.compat.v1.summary.FileWriter(logdir + "/metrics", sess.graph)
+# file_writer.set_as_default()
 tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
 
 
