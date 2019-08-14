@@ -78,7 +78,7 @@ def train_model():
 
     print("TRAIN")
     # Train the neural network
-    model.fit(X_train, Y_train, validation_data=(X_test, Y_test), batch_size=32, epochs=epoch, verbose=0, callbacks=[tensorboard_callback],)
+    model.fit(X_train, Y_train, validation_data=(X_test, Y_test), batch_size=32, epochs=epoch, verbose=3, callbacks=[tensorboard_callback],)
 
     # Save the trained model to disk
     model.save(MODELNAME_FILE)
