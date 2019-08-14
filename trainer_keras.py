@@ -35,7 +35,8 @@ logdir = "log/" + datetime.now().strftime("%Y%m%d-%H%M%S")
 with tf.compat.v1.Session() as sess:
     file_writer = tf.compat.v1.summary.FileWriter(logdir, sess.graph)
 # file_writer.set_as_default()
-tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
+tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir, histogram_freq=1, write_graph=True, write_images=False,
+                                        embeddings_freq=0, embeddings_layer_names=None, embeddings_metadata=None)
 
 
 model = tf.keras.Sequential()
