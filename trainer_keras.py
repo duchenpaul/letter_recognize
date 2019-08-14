@@ -32,12 +32,6 @@ MODELNAME = os.path.join('letter_recognation-{}-{}.model'.format(LR, '{}_e{}'.fo
 MODELNAME_FILE = os.path.join(model_dir, MODELNAME)
 
 logdir = "log/" + datetime.now().strftime("%Y%m%d-%H%M%S")
-with tf.compat.v1.Session() as sess:
-    file_writer = tf.compat.v1.summary.FileWriter(logdir, sess.graph)
-# file_writer.set_as_default()
-tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir, histogram_freq=1, write_graph=True, write_images=False,
-                                        embeddings_freq=0, embeddings_layer_names=None, embeddings_metadata=None)
-
 
 model = tf.keras.Sequential()
 model.add(Conv2D(layer_list[0], (5, 5), padding="same", input_shape=(IMG_SIZE, IMG_SIZE, 1), activation='relu'))
@@ -79,6 +73,8 @@ def train_model():
 
     print("TRAIN")
     # Train the neural network
+    tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir, histogram_freq=1, write_graph=True, write_images=False,
+                                        embeddings_freq=0, embeddings_layer_names=None, embeddings_metadata=None)
     model.fit(X_train, Y_train, validation_data=(X_test, Y_test), batch_size=32, epochs=epoch, verbose=3, callbacks=[tensorboard_callback],)
 
     # Save the trained model to disk
