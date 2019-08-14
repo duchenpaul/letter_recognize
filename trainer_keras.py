@@ -31,6 +31,12 @@ tag = '[{}]'.format('-'.join([str(x) for x in layer_list]))
 MODELNAME = os.path.join('letter_recognation-{}-{}.model'.format(LR, '{}_e{}'.format(tag, epoch)))
 MODELNAME_FILE = os.path.join(model_dir, MODELNAME)
 
+logdir = "logs/"
+file_writer = tf.summary.create_file_writer(logdir + "/metrics")
+file_writer.set_as_default()
+tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
+
+
 model = tf.keras.Sequential()
 model.add(Conv2D(layer_list[0], (5, 5), padding="same", input_shape=(IMG_SIZE, IMG_SIZE, 1), activation='relu'))
 model.add(MaxPool2D(pool_size=(2, 2), strides=(2, 2)))
@@ -71,7 +77,7 @@ def train_model():
 
     print("TRAIN")
     # Train the neural network
-    model.fit(X_train, Y_train, validation_data=(X_test, Y_test), batch_size=32, epochs=epoch, verbose=1)
+    model.fit(X_train, Y_train, validation_data=(X_test, Y_test), batch_size=32, epochs=epoch, verbose=3, callbacks=[tensorboard_callback],)
 
     # Save the trained model to disk
     model.save(MODELNAME_FILE)
