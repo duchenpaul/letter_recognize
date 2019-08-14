@@ -1,6 +1,6 @@
 import os
 import numpy as np
-
+from datetime import datetime
 # import tflearn
 # from tflearn.layers.conv import conv_2d, max_pool_2d
 # from tflearn.layers.core import input_data, dropout, fully_connected
@@ -31,7 +31,7 @@ tag = '[{}]'.format('-'.join([str(x) for x in layer_list]))
 MODELNAME = os.path.join('letter_recognation-{}-{}.model'.format(LR, '{}_e{}'.format(tag, epoch)))
 MODELNAME_FILE = os.path.join(model_dir, MODELNAME)
 
-logdir = "log"
+logdir = "log/" + datetime.now().strftime("%Y%m%d-%H%M%S")
 sess = tf.compat.v1.Session()
 file_writer = tf.compat.v1.summary.FileWriter(logdir, sess.graph)
 # file_writer.set_as_default()
