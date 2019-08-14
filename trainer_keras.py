@@ -31,7 +31,7 @@ tag = '[{}]'.format('-'.join([str(x) for x in layer_list]))
 MODELNAME = os.path.join('letter_recognation-{}-{}.model'.format(LR, '{}_e{}'.format(tag, epoch)))
 MODELNAME_FILE = os.path.join(model_dir, MODELNAME)
 
-logdir = "log"
+logdir = "log/scalars/" + datetime.now().strftime("%Y%m%d-%H%M%S")
 with tf.compat.v1.Session() as sess:
     file_writer = tf.compat.v1.summary.FileWriter(logdir, sess.graph)
 # file_writer.set_as_default()
