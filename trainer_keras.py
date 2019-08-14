@@ -32,10 +32,18 @@ MODELNAME = os.path.join('letter_recognation-{}-{}.model'.format(LR, '{}_e{}'.fo
 MODELNAME_FILE = os.path.join(model_dir, MODELNAME)
 
 logdir = "log/" + datetime.now().strftime("%Y%m%d-%H%M%S")
-sess = tf.compat.v1.Session()
-file_writer = tf.compat.v1.summary.FileWriter(logdir, sess.graph)
+with tf.compat.v1.Session() as sess:
+    file_writer = tf.compat.v1.summary.FileWriter(logdir, sess.graph)
 # file_writer.set_as_default()
-tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
+tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir,
+                                                         histogram_freq=0,  # 按照何等频率（epoch）来计算直方图，0为不计算
+                                    #                  batch_size=32,     # 用多大量的数据计算直方图
+                                                         write_graph=True,  # 是否存储网络结构图
+                                                         write_grads=True, # 是否可视化梯度直方图
+                                                         write_images=True,# 是否可视化参数
+                                                         embeddings_freq=0, 
+                                                         embeddings_layer_names=None, 
+                                                         embeddings_metadata=None)
 
 
 model = tf.keras.Sequential()
