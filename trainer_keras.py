@@ -33,7 +33,7 @@ MODELNAME_FILE = os.path.join(model_dir, MODELNAME)
 
 logdir = "log"
 sess = tf.compat.v1.Session()
-file_writer = tf.compat.v1.summary.FileWriter(logdir + "/metrics", sess.graph)
+file_writer = tf.compat.v1.summary.FileWriter(logdir, sess.graph)
 # file_writer.set_as_default()
 tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
 
