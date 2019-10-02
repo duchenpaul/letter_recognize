@@ -23,7 +23,7 @@ import embedding_project
 
 IMG_SIZE = config.IMG_SIZE
 model_dir = config.MODEL_DIR
-log_dir = config.MODEL_LOG
+LOG_DIR = config.MODEL_LOG
 num_classes = len(config.char_set)
 
 epoch = 1000
@@ -41,14 +41,18 @@ MODELNAME_FULL_PATH = os.path.join(model_dir, MODELNAME_FILE)
 
 def gen_meta(X_dataset, Y_dataset):
     from PIL import Image
+    sample_size = 100
     # print(X_dataset.shape)
-    X_dataset_sample = X_dataset[:100*100, :, :, :]
+    X_dataset_sample = X_dataset[:sample_size*sample_size, :, :, :]
+    Y_dataset_sample = Y_dataset[:sample_size*sample_size]
     # print(X_dataset_sample.shape)
-    img_array = X_dataset_sample.reshape(100, 100, IMG_SIZE, IMG_SIZE)
+    img_array = X_dataset_sample.reshape(sample_size, sample_size, IMG_SIZE, IMG_SIZE)
     img_array_flat = np.concatenate([np.concatenate([x for x in row], axis=1) for row in img_array])
     img = Image.fromarray(np.uint8(255 * (1. - img_array_flat)))
+    log_dir = os.path.join(LOG_DIR, MODELNAME)
+    os.mkdir(log_dir)
     img.save(os.path.join(log_dir, 'images.jpg'))
-    np.savetxt(os.path.join(log_dir, 'metadata.tsv'), np.where(Y_dataset)[1], fmt='%d')
+    np.savetxt(os.path.join(log_dir, 'metadata.tsv'), np.where(Y_dataset_sample)[1], fmt='%d')
 
 
 def data_preprocess():
@@ -95,30 +99,30 @@ def train_model(model, X_dataset, Y_dataset):
                             for layer in model.layers
                             if layer.name.startswith('dense_'))
 
-    # tbCallBack = TensorBoard(log_dir=os.path.join(log_dir, MODELNAME),  # log 目录
-    #                          histogram_freq=1,  # 按照何等频率（epoch）来计算直方图，0为不计算
-    #                          #                  batch_size=batch_size,     # 用多大量的数据计算直方图
-    #                          write_graph=True,  # 是否存储网络结构图
-    #                          write_grads=True,  # 是否可视化梯度直方图
-    #                          write_images=True,  # 是否可视化参数
-    #                          embeddings_freq=10,
-    #                          embeddings_data = X_dataset[:100],
-    #                          embeddings_layer_names=embedding_layer_names,
-    #                          embeddings_metadata=None
-    #                          )
-
-    tbCallBack = embedding_project.TensorResponseBoard(log_dir=os.path.join(log_dir, MODELNAME),  # log 目录
+    tbCallBack = TensorBoard(log_dir=os.path.join(LOG_DIR, MODELNAME),  # log 目录
                              histogram_freq=1,  # 按照何等频率（epoch）来计算直方图，0为不计算
                              #                  batch_size=batch_size,     # 用多大量的数据计算直方图
                              write_graph=True,  # 是否存储网络结构图
                              write_grads=True,  # 是否可视化梯度直方图
                              write_images=True,  # 是否可视化参数
                              embeddings_freq=10,
-                             embeddings_layer_names=['dense_1'],
                              embeddings_data = X_dataset[:100],
-                             embeddings_metadata=os.path.join(log_dir, 'metadata.tsv'),
-                             val_size=int(len(X_dataset)*0.1)+1, img_path=os.path.join(log_dir, 'images.jpg'), img_size=[28, 28]
+                             embeddings_layer_names=embedding_layer_names,
+                             embeddings_metadata=None
                              )
+
+    # tbCallBack = embedding_project.TensorResponseBoard(log_dir=os.path.join(LOG_DIR, MODELNAME),  # log 目录
+    #                          histogram_freq=1,  # 按照何等频率（epoch）来计算直方图，0为不计算
+    #                          #                  batch_size=batch_size,     # 用多大量的数据计算直方图
+    #                          write_graph=True,  # 是否存储网络结构图
+    #                          write_grads=True,  # 是否可视化梯度直方图
+    #                          write_images=True,  # 是否可视化参数
+    #                          embeddings_freq=10,
+    #                          embeddings_layer_names=['dense_1'],
+    #                          embeddings_data = X_dataset[:100],
+    #                          embeddings_metadata='metadata.tsv',
+    #                          val_size=len(X_dataset[:100]), img_path='images.jpg', img_size=[28, 28]
+    #                          )
 
     model.fit(X_dataset, Y_dataset, epochs=epoch, shuffle=True, batch_size=batch_size,
               validation_split=0.1, callbacks=[callback, tbCallBack])
