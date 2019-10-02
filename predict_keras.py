@@ -3,26 +3,31 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 import os
 
 import numpy as np
+import matplotlib.pyplot as plt
+
 from keras.models import load_model
 
 import train_prep
 import config
+import color_card
 
 
 model_dir = config.MODEL_DIR
 IMG_SIZE = config.IMG_SIZE
 
-MODELNAME = ''
-MODELNAME_FILES = os.path.join(model_dir, MODELNAME)
+MODELNAME = 'letter_recognation-0.0005-[32-64]_e1500'
+MODELNAME_FILE = MODELNAME + '.model'
+MODELNAME_FULL_PATH = os.path.join(model_dir, MODELNAME_FILE)
 
 
 def test_model():
     print('Test model')
-    if os.path.exists(os.path.join(model_dir, '{}.meta'.format(MODELNAME))):
-        model = load_model(MODELNAME_FILES)
+    try:
+        model = load_model(MODELNAME_FULL_PATH)
+    except:
+        print('Failed to load Model')
+    else:
         print('Model loaded!')
-
-    import matplotlib.pyplot as plt
 
     # if you need to create the data:
     test_data = train_prep.process_test_data()
@@ -37,7 +42,7 @@ def test_model():
 
         y = fig.add_subplot(3, 4, num + 1)
         orig = img_data
-        data = img_data.reshape(IMG_SIZE, IMG_SIZE, 1)
+        data = img_data.reshape(-1, IMG_SIZE, IMG_SIZE, 1)
         #model_out = model.predict([data])[0]
         model_out = model.predict([data])[0]
 
@@ -47,12 +52,15 @@ def test_model():
         # print(config.char_set[int(np.argmax(model_out))])
         ans = chr(config.char_set[int(np.argmax(model_out))])
         notSureFlag = '?' if model_out[np.argmax(model_out)] < 0.5 else ''
-        print('Answer: {}  Confidence: {}\n'.format(
-            ans, model_out[np.argmax(model_out)]))
+        notSureFlag = '!' if model_out[np.argmax(model_out)] == 1 else ''
+        confidence = model_out[np.argmax(model_out)]
+        print('Answer: {}  Confidence: {}\n'.format(ans, confidence))
         y.imshow(orig, cmap='gray')
-        plt.title(ans + notSureFlag)
+        color = color_card.color_card(confidence*100)
+        plt.title(ans + notSureFlag,color=color)
         y.axes.get_xaxis().set_visible(False)
         y.axes.get_yaxis().set_visible(False)
+
     plt.show()
 
 
