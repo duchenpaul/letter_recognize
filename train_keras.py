@@ -32,9 +32,10 @@ LR = 1e-3 / 2
 tag = '[32-64]'
 dropOutRate = .5
 
-MODELNAME = 'letter_recognation-{}-{}.model'.format(
+MODELNAME = 'letter_recognation-{}-{}'.format(
     LR, '{}_e{}'.format(tag, epoch))
-MODELNAME_FILES = os.path.join(model_dir, MODELNAME)
+MODELNAME_FILE = MODELNAME + '.model'
+MODELNAME_FULL_PATH = os.path.join(model_dir, MODELNAME)
 
 
 def data_preprocess():
@@ -50,7 +51,7 @@ def data_preprocess():
 
 
 def buildModel(shape):
-    model = Sequential()
+    model = Sequential(name=MODELNAME)
     model.add(Conv2D(32, 5, 5, input_shape=(
         shape[1], shape[2], 1), activation='relu'))
     model.add(MaxPooling2D(pool_size=(5, 5)))
@@ -87,7 +88,7 @@ def train_model(model, X_dataset, Y_dataset):
 
     model.fit(X_dataset, Y_dataset, epochs=epoch, shuffle=True, batch_size=batch_size,
               validation_split=0.2, callbacks=[callback, tbCallBack])
-    model.save(MODELNAME_FILES)
+    model.save(MODELNAME_FULL_PATH)
 
 
 if __name__ == '__main__':
