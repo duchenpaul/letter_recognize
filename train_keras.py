@@ -35,7 +35,7 @@ dropOutRate = .5
 MODELNAME = 'letter_recognation-{}-{}'.format(
     LR, '{}_e{}'.format(tag, epoch))
 MODELNAME_FILE = MODELNAME + '.model'
-MODELNAME_FULL_PATH = os.path.join(model_dir, MODELNAME)
+MODELNAME_FULL_PATH = os.path.join(model_dir, MODELNAME_FILE)
 
 
 def data_preprocess():
@@ -77,15 +77,22 @@ def train_model(model, X_dataset, Y_dataset):
     print("TRAIN")
     callback = EarlyStopping(
         monitor="val_loss", patience=10, verbose=1, mode="auto")
+
+    embedding_layer_names = set(layer.name
+                            for layer in model.layers
+                            if layer.name.startswith('dense_'))
+    
     tbCallBack = TensorBoard(log_dir=os.path.join(log_dir, MODELNAME),  # log 目录
                              histogram_freq=1,  # 按照何等频率（epoch）来计算直方图，0为不计算
                              #                  batch_size=batch_size,     # 用多大量的数据计算直方图
                              write_graph=True,  # 是否存储网络结构图
                              write_grads=True,  # 是否可视化梯度直方图
                              write_images=True,  # 是否可视化参数
-                             embeddings_freq=0,
-                             embeddings_layer_names=None,
-                             embeddings_metadata=None)
+                             embeddings_freq=1,
+                             embeddings_data = X_dataset[:100],
+                             embeddings_layer_names=embedding_layer_names,
+                             # embeddings_metadata=None
+                             )
 
     model.fit(X_dataset, Y_dataset, epochs=epoch, shuffle=True, batch_size=batch_size,
               validation_split=0.2, callbacks=[callback, tbCallBack])
