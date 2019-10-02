@@ -76,7 +76,7 @@ def train_model(model, X_dataset, Y_dataset):
     print("TRAIN")
     callback = EarlyStopping(
         monitor="loss", patience=30, verbose=1, mode="auto")
-    tbCallBack = TensorBoard(log_dir=log_dir,  # log 目录
+    tbCallBack = TensorBoard(log_dir=os.path.join(log_dir, MODELNAME),  # log 目录
                              histogram_freq=1,  # 按照何等频率（epoch）来计算直方图，0为不计算
                              #                  batch_size=batch_size,     # 用多大量的数据计算直方图
                              write_graph=True,  # 是否存储网络结构图
