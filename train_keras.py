@@ -89,9 +89,9 @@ def train_model(model, X_dataset, Y_dataset):
                              write_grads=True,  # 是否可视化梯度直方图
                              write_images=True,  # 是否可视化参数
                              embeddings_freq=1,
-                             # embeddings_data = X_dataset[:100],
+                             embeddings_data = X_dataset[:100],
                              embeddings_layer_names=embedding_layer_names,
-                             # embeddings_metadata=None
+                             embeddings_metadata=None
                              )
 
     model.fit(X_dataset, Y_dataset, epochs=epoch, shuffle=True, batch_size=batch_size,
