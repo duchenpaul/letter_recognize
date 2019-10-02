@@ -13,7 +13,7 @@ from keras.optimizers import Adam
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 from keras.callbacks import TensorBoard
 
-# import purge_models
+import purge_models
 import train_prep
 
 import config
@@ -92,7 +92,7 @@ def train_model(model, X_dataset, Y_dataset):
 
 
 if __name__ == '__main__':
-    # purge_models.purge_models()
+    purge_models.purge_models()
     X_dataset, Y_dataset = data_preprocess()
     shape = X_dataset.shape
     model = buildModel(shape)
