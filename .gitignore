@@ -23,6 +23,7 @@ fonts/*
 models/*
 log/*
 training_data/*
+logs/*
 
 *test*
 config.ini
