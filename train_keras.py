@@ -24,7 +24,7 @@ model_dir = config.MODEL_DIR
 log_dir = config.MODEL_LOG
 num_classes = len(config.char_set)
 
-epoch = 1500
+epoch = 1
 batch_size = 80
 
 # Learning rate
