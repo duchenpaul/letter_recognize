@@ -42,7 +42,7 @@ def data_process(data_path, label):
     '''
     training_data = []
     for img in os.listdir(data_path):  # iterate over each image per dogs and cats
-        print(img)
+        # print(img)
         try:
             img_array = cv2.imread(os.path.join(
                 data_path, img), cv2.IMREAD_GRAYSCALE)  # convert to array
@@ -68,8 +68,10 @@ def create_training_data():
         path = os.path.join(TRAINDIR, str(category))
         label = number2list(idx)
         training_data += data_process(path, label)
-        print(len(training_data))
+        # print(len(training_data))
     random.shuffle(training_data)
+    training_data = np.array(training_data)
+    print(training_data.shape)
     np.save('train_data.npy', training_data)
     return training_data
 
@@ -83,6 +85,4 @@ def process_test_data():
 
 
 if __name__ == '__main__':
-    import purge_models
-    purge_models.purge_models()
     training_data = create_training_data()
