@@ -58,6 +58,7 @@ def buildModel(shape):
 
     model.add(Conv2D(64, 3, 3, activation='relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Dropout(dropOutRate))
 
     model.add(Flatten())
     model.add(Dense(128, activation='relu'))
@@ -75,7 +76,7 @@ def buildModel(shape):
 def train_model(model, X_dataset, Y_dataset):
     print("TRAIN")
     callback = EarlyStopping(
-        monitor="loss", patience=30, verbose=1, mode="auto")
+        monitor="val_loss", patience=10, verbose=1, mode="auto")
     tbCallBack = TensorBoard(log_dir=os.path.join(log_dir, MODELNAME),  # log 目录
                              histogram_freq=1,  # 按照何等频率（epoch）来计算直方图，0为不计算
                              #                  batch_size=batch_size,     # 用多大量的数据计算直方图
