@@ -32,8 +32,7 @@ LR = 1e-3 / 2
 tag = '[32-64]'
 dropOutRate = .5
 
-MODELNAME = 'letter_recognation-{}-{}'.format(
-    LR, '{}_e{}'.format(tag, epoch))
+MODELNAME = 'letter_recognation'.format()
 MODELNAME_FILE = MODELNAME + '.model'
 MODELNAME_FULL_PATH = os.path.join(model_dir, MODELNAME_FILE)
 
