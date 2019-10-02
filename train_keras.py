@@ -13,7 +13,7 @@ from keras.optimizers import Adam
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 from keras.callbacks import TensorBoard
 
-import purge_models
+# import purge_models
 import train_prep
 
 import config
@@ -21,6 +21,7 @@ import config
 
 IMG_SIZE = config.IMG_SIZE
 model_dir = config.MODEL_DIR
+log_dir = config.MODEL_LOG
 num_classes = len(config.char_set)
 
 epoch = 1500
@@ -71,12 +72,10 @@ def buildModel(shape):
 
 
 def train_model(model, X_dataset, Y_dataset):
-    purge_models.purge_models()
-
     print("TRAIN")
     callback = EarlyStopping(
         monitor="loss", patience=30, verbose=1, mode="auto")
-    tbCallBack = TensorBoard(log_dir=model_dir,  # log 目录
+    tbCallBack = TensorBoard(log_dir=log_dir,  # log 目录
                              histogram_freq=1,  # 按照何等频率（epoch）来计算直方图，0为不计算
                              #                  batch_size=batch_size,     # 用多大量的数据计算直方图
                              write_graph=True,  # 是否存储网络结构图
@@ -92,6 +91,7 @@ def train_model(model, X_dataset, Y_dataset):
 
 
 if __name__ == '__main__':
+    # purge_models.purge_models()
     X_dataset, Y_dataset = data_preprocess()
     shape = X_dataset.shape
     model = buildModel(shape)
