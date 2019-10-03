@@ -69,11 +69,11 @@ def data_preprocess():
 
 def buildModel(shape):
     model = Sequential(name=MODELNAME)
-    model.add(Conv2D(32, 5, 5, input_shape=(
+    model.add(Conv2D(32, 5, input_shape=(
         shape[1], shape[2], 1), activation='relu'))
     model.add(MaxPooling2D(pool_size=(5, 5)))
 
-    model.add(Conv2D(64, 3, 3, activation='relu'))
+    model.add(Conv2D(64, 3, activation='relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Dropout(dropOutRate))
 
