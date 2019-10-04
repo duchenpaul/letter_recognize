@@ -15,7 +15,7 @@ import color_card
 model_dir = config.MODEL_DIR
 IMG_SIZE = config.IMG_SIZE
 
-MODELNAME = 'letter_recognation-0.0005-[32-64]_e1500'
+MODELNAME = 'letter_recognation'
 MODELNAME_FILE = MODELNAME + '.model'
 MODELNAME_FULL_PATH = os.path.join(model_dir, MODELNAME_FILE)
 
@@ -51,8 +51,9 @@ def test_model():
         # print(str_label)
         # print(config.char_set[int(np.argmax(model_out))])
         ans = chr(config.char_set[int(np.argmax(model_out))])
-        notSureFlag = '?' if model_out[np.argmax(model_out)] < 0.5 else ''
-        notSureFlag = '!' if model_out[np.argmax(model_out)] == 1 else ''
+        notSureFlag = ''
+        notSureFlag = '?' if model_out[np.argmax(model_out)] < 0.5 else notSureFlag
+        notSureFlag = '!' if model_out[np.argmax(model_out)] == 1 else notSureFlag
         confidence = model_out[np.argmax(model_out)]
         print('Answer: {}  Confidence: {}\n'.format(ans, confidence))
         y.imshow(orig, cmap='gray')
