@@ -9,6 +9,7 @@ from datetime import datetime
 import tensorflow as tf
 from tensorflow.keras.layers import Flatten, Dense, Dropout
 from tensorflow.keras.layers import Conv2D, MaxPool2D
+from tensorflow.keras.models import load_model
 
 import purge_models
 import train_prep
@@ -31,7 +32,7 @@ tag = '[{}]'.format('-'.join([str(x) for x in layer_list]))
 MODELNAME = os.path.join('letter_recognation-{}-{}.model'.format(LR, '{}_e{}'.format(tag, epoch)))
 MODELNAME_FILE = os.path.join(model_dir, MODELNAME)
 
-logdir = "log/" + datetime.now().strftime("%Y%m%d-%H%M%S")
+logdir = "log" + os.sep + datetime.now().strftime("%Y%m%d-%H%M%S")
 
 model = tf.keras.Sequential()
 model.add(Conv2D(layer_list[0], (5, 5), padding="same", input_shape=(IMG_SIZE, IMG_SIZE, 1), activation='relu'))
@@ -89,6 +90,9 @@ def test_model():
     # else:
     #     err_msg = 'Model {} not found'.format(os.path.join(model_dir, '{}.meta'.format(MODELNAME)))
     #     raise Exception(err_msg)
+    print(MODELNAME_FILE)
+    model = load_model(MODELNAME_FILE)
+    print('Model loaded!')
 
 
     import matplotlib.pyplot as plt
@@ -127,5 +131,5 @@ def test_model():
 
 
 if __name__ == '__main__':
-    train_model()
+    # train_model()
     test_model()
